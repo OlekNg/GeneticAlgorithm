@@ -10,9 +10,8 @@ namespace Genetics
         IChromosome Clone();
         Tuple<IChromosome, IChromosome> Crossover(IChromosome c);
         void Eval();
-        IChromosome Mutate();
+        void Mutate();
         void Repair();
-        
 
         /// <summary>s
         /// Vale of chromosome - effect of Eval function.

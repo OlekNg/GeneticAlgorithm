@@ -7,6 +7,6 @@ namespace Genetics.Mutation
 {
     public interface IBinaryMutationOperator
     {
-        BinaryChromosome Mutate(BinaryChromosome chromosome);
+        void Mutate(BinaryChromosome chromosome);
     }
 }

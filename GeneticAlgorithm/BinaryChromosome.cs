@@ -66,12 +66,10 @@ namespace Genetics
             _value = Evaluator.Eval(this);
         }
 
-        public IChromosome Mutate()
+        public void Mutate()
         {
-            if(MutationOperator == null)
-                return this.Clone();
-
-            return MutationOperator.Mutate(this);
+            if(MutationOperator != null)
+                MutationOperator.Mutate(this);
         }
 
         public void Repair()

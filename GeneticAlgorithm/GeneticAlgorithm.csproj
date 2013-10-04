@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryChromosome.cs" />
+    <Compile Include="ChromosomeFactory.cs" />
     <Compile Include="Crossover\IBinaryCrossoverOperator.cs" />
     <Compile Include="Crossover\OnePointCrossover.cs" />
     <Compile Include="Evaluation\IBinaryEvaluator.cs" />
