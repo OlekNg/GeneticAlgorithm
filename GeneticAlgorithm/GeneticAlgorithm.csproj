@@ -7,7 +7,7 @@
     <ProjectGuid>{2F9368F3-05B9-4A87-9845-5AFAC662DE16}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeneticAlgorithm</RootNamespace>
+    <RootNamespace>Genetics</RootNamespace>
     <AssemblyName>GeneticAlgorithm</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -39,9 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="BinaryChromosome.cs" />
+    <Compile Include="Crossover\IBinaryCrossoverOperator.cs" />
+    <Compile Include="Evaluation\IBinaryEvaluator.cs" />
+    <Compile Include="GeneticAlgorithm.cs" />
+    <Compile Include="GeneticAlgorithmException.cs" />
+    <Compile Include="IChromosome.cs" />
+    <Compile Include="Mutation\IBinaryMutationOperator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
