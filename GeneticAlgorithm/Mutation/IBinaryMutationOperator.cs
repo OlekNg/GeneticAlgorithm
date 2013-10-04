@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Genetics.Mutation
 {
-    interface IBinaryMutationOperator
+    public interface IBinaryMutationOperator
     {
-        public BinaryChromosome Mutate(BinaryChromosome chromosome);
+        BinaryChromosome Mutate(BinaryChromosome chromosome);
     }
 }

@@ -5,15 +5,18 @@ using System.Text;
 
 namespace Genetics
 {
-    interface IChromosome
+    public interface IChromosome
     {
-        public IChromosome Crossover(IChromosome c);
-        public IChromosome Mutate();
-        public void Eval();
+        IChromosome Clone();
+        Tuple<IChromosome, IChromosome> Crossover(IChromosome c);
+        void Eval();
+        IChromosome Mutate();
+        void Repair();
+        
 
         /// <summary>s
         /// Vale of chromosome - effect of Eval function.
         /// </summary>
-        public double Value { get; }
+        double Value { get; }
     }
 }

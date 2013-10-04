@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Genetics.Reparation;
 
 namespace Genetics
 {
-    class BinaryChromosome : IChromosome
+    public class BinaryChromosome : IChromosome
     {
         private double _value;
 
@@ -28,30 +29,33 @@ namespace Genetics
         }
 
         public static IBinaryCrossoverOperator CrossoverOperator { get; set; }
-        public static IBinaryMutationOperator MutationOperator { get; set; }
         public static IBinaryEvaluator Evaluator { get; set; }
+        public static IBinaryMutationOperator MutationOperator { get; set; }
+        public static IBinaryRepairer Repairer { get; set; }
 
         public List<bool> Genotype { get; set; }
+
+        public int Length
+        {
+            get { return Genotype.Count; }
+        }
 
         public double Value
         {
             get { return _value; }
         }
 
-        public IChromosome Crossover(IChromosome c)
+        public IChromosome Clone()
+        {
+            return new BinaryChromosome(this);
+        }
+
+        public Tuple<IChromosome, IChromosome> Crossover(IChromosome c)
         {
             if (CrossoverOperator == null)
                 throw new GeneticAlgorithmException("Crossover operator not set. Crossover cannot be performed.");
 
             return CrossoverOperator.Crossover(this, (BinaryChromosome)c);
-        }
-
-        public IChromosome Mutate()
-        {
-            if (MutationOperator == null)
-                throw new GeneticAlgorithmException("Mutation operator not set. Mutation cannot be performed.");
-
-            return MutationOperator.Mutate(this);
         }
 
         public void Eval()
@@ -60,6 +64,20 @@ namespace Genetics
                 throw new GeneticAlgorithmException("Evaluator not set. Evaluation cannot be performed.");
 
             _value = Evaluator.Eval(this);
+        }
+
+        public IChromosome Mutate()
+        {
+            if(MutationOperator == null)
+                return this.Clone();
+
+            return MutationOperator.Mutate(this);
+        }
+
+        public void Repair()
+        {
+            if (Repairer != null)
+                Genotype = Repairer.Repair(this).Genotype;
         }
     }
 }

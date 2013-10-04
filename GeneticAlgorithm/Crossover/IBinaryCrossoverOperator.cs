@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Genetics.Crossover
 {
-    interface IBinaryCrossoverOperator
+    public interface IBinaryCrossoverOperator
     {
-        public BinaryChromosome Crossover(BinaryChromosome c1, BinaryChromosome c2);
+        Tuple<IChromosome, IChromosome> Crossover(BinaryChromosome c1, BinaryChromosome c2);
     }
 }

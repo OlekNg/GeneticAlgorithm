@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Genetics.Evaluation
 {
-    interface IBinaryEvaluator
+    public interface IBinaryEvaluator
     {
-        public double Eval(BinaryChromosome chromosome);
+        double Eval(BinaryChromosome chromosome);
     }
 }

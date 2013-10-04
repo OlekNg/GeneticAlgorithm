@@ -41,12 +41,18 @@
   <ItemGroup>
     <Compile Include="BinaryChromosome.cs" />
     <Compile Include="Crossover\IBinaryCrossoverOperator.cs" />
+    <Compile Include="Crossover\OnePointCrossover.cs" />
     <Compile Include="Evaluation\IBinaryEvaluator.cs" />
     <Compile Include="GeneticAlgorithm.cs" />
     <Compile Include="GeneticAlgorithmException.cs" />
     <Compile Include="IChromosome.cs" />
+    <Compile Include="Mutation\ClassicMutation.cs" />
     <Compile Include="Mutation\IBinaryMutationOperator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reparation\IBinaryRepairer.cs" />
+    <Compile Include="Selection\ISelector.cs" />
+    <Compile Include="Selection\RouletteSelector.cs" />
+    <Compile Include="Selection\TournamentSelector.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
