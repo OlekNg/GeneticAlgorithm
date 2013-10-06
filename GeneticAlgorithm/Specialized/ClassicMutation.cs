@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Genetics.Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Genetics.Mutation
+namespace Genetics.Specialized
 {
-    public class ClassicMutation : IBinaryMutationOperator
+    public class ClassicMutation : IMutationOperator<BinaryChromosome>
     {
         private const double DEFAULT_PROBABILITY = 0.1;
 
@@ -13,23 +14,20 @@ namespace Genetics.Mutation
         /// To randomize mutation.
         /// </summary>
         private Random _randomizer;
+        private double _probability;
 
-        public ClassicMutation()
+        public ClassicMutation(double probability = DEFAULT_PROBABILITY)
         {
             _randomizer = new Random();
+            _probability = probability;
         }
 
-        public void Mutate(BinaryChromosome c)
+        public void Mutate(BinaryChromosome chromosome)
         {
-            Mutate(c, DEFAULT_PROBABILITY);
-        }
-
-        public void Mutate(BinaryChromosome c, double probability)
-        {
-            List<bool> genotype = c.Genotype;
+            List<bool> genotype = chromosome.Genotype;
             for (int i = 0; i < genotype.Count; i++)
             {
-                if(_randomizer.NextDouble() <= probability)
+                if (_randomizer.NextDouble() <= _probability)
                     genotype[i] = !genotype[i];
             }
         }

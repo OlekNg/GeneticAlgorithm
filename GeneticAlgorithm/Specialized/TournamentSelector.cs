@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Genetics.Generic;
 
-namespace Genetics.Selection
+namespace Genetics.Specialized
 {
     /// <summary>
     /// Deterministic tournament selector.

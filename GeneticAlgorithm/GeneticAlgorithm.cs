@@ -1,4 +1,4 @@
-﻿using Genetics.Selection;
+﻿using Genetics.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +6,17 @@ using System.Text;
 
 namespace Genetics
 {
-    public class GeneticAlgorithm
+    public class GeneticAlgorithm<T>
+        where T: IChromosome
     {
         private const int DEFAULT_MAX_ITERATIONS = 1000;
 
-        private List<IChromosome> _currentPopulation;
+        private List<T> _currentPopulation;
 
-        public GeneticAlgorithm(ChromosomeFactory factory, int initialPopulationSize)
+        public GeneticAlgorithm(IChromosomeFactory<T> factory, int initialPopulationSize)
         {
             MaxIterations = DEFAULT_MAX_ITERATIONS;
-            _currentPopulation = new List<IChromosome>(initialPopulationSize);
+            _currentPopulation = new List<T>(initialPopulationSize);
 
             for (int i = 0; i < initialPopulationSize; i++)
                 _currentPopulation.Add(factory.Create());

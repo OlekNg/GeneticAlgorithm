@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Genetics.Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Genetics.Selection
+namespace Genetics.Specialized
 {
     public class RouletteSelector : ISelector
     {
