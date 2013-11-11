@@ -7,6 +7,6 @@ namespace Genetics.Generic
 {
     public interface ISelector
     {
-        List<IChromosome> Select(List<IChromosome> population);
+        Population Select(Population population);
     }
 }

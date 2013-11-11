@@ -15,16 +15,16 @@ namespace Genetics.Specialized
             _randomizer = new Random();
         }
 
-        public List<IChromosome> Select(List<IChromosome> population)
+        public Population Select(Population population)
         {
-            population.Sort();
+            population.Chromosomes.Sort();
 
             // Distribution function.
             List<double> F = new List<double>();
 
             double totalValue = 0;
 
-            foreach (IChromosome c in population)
+            foreach (IChromosome c in population.Chromosomes)
                 F.Add(totalValue += c.Value);
 
             // Normalize ( F belongs to <0,1>)
@@ -32,7 +32,7 @@ namespace Genetics.Specialized
                 F[i] /= totalValue;
 
             // Drawing chromosomes.
-            List<IChromosome> result = new List<IChromosome>(population.Count);
+            Population result = new Population(population.Count);
             for (int i = 0; i < F.Count; i++)
             {
                 double number = _randomizer.NextDouble();

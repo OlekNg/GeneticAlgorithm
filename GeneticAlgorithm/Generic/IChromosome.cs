@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Genetics.Generic
 {
-    public interface IChromosome
+    public interface IChromosome : IComparable<IChromosome>
     {
         double Value { get; set; }
 
         IChromosome Clone();
-        Tuple<IChromosome, IChromosome> Crossover(IChromosome c);
+        void Crossover(IChromosome c);
         void Eval();
         void Mutate();
         void Repair();

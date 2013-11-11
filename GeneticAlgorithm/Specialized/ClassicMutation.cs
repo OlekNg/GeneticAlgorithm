@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Genetics.Specialized
 {
-    public class ClassicMutation : IMutationOperator<BinaryChromosome>
+    public class ClassicMutation : IMutationOperator<List<bool>>
     {
         private const double DEFAULT_PROBABILITY = 0.1;
 
@@ -22,9 +22,8 @@ namespace Genetics.Specialized
             _probability = probability;
         }
 
-        public void Mutate(BinaryChromosome chromosome)
+        public void Mutate(List<bool> genotype)
         {
-            List<bool> genotype = chromosome.Genotype;
             for (int i = 0; i < genotype.Count; i++)
             {
                 if (_randomizer.NextDouble() <= _probability)

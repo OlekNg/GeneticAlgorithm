@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Genetics.Generic
 {
-    public interface IChromosomeFactory<T>
-        where T : IChromosome
+    public interface IChromosomeFactory
     {
-        T Create();
+        IChromosome Create();
     }
 }

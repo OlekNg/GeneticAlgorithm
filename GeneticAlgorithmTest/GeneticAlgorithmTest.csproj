@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F9368F3-05B9-4A87-9845-5AFAC662DE16}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{64222020-EA56-4C57-92FA-03737CE4F448}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Genetics</RootNamespace>
-    <AssemblyName>GeneticAlgorithm</AssemblyName>
+    <RootNamespace>GeneticAlgorithmTest</RootNamespace>
+    <AssemblyName>GeneticAlgorithmTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -39,26 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generic\IChromosome.cs" />
-    <Compile Include="Population.cs" />
-    <Compile Include="Specialized\BinaryChromosome.cs" />
-    <Compile Include="Generic\IChromosomeFactory.cs" />
-    <Compile Include="Specialized\BinaryChromosomeFactory.cs" />
-    <Compile Include="Specialized\OnePointCrossover.cs" />
-    <Compile Include="Generic\Chromosome.cs" />
-    <Compile Include="Generic\ICrossoverOperator.cs" />
-    <Compile Include="Generic\IEvaluator.cs" />
-    <Compile Include="Generic\IMutationOperator.cs" />
-    <Compile Include="Generic\IRepairer.cs" />
-    <Compile Include="GeneticAlgorithm.cs" />
-    <Compile Include="GeneticAlgorithmException.cs" />
-    <Compile Include="Specialized\ClassicMutation.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Generic\ISelector.cs" />
-    <Compile Include="Specialized\RouletteSelector.cs" />
-    <Compile Include="Specialized\TournamentSelector.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\GeneticAlgorithm\GeneticAlgorithm.csproj">
+      <Project>{2f9368f3-05b9-4a87-9845-5afac662de16}</Project>
+      <Name>GeneticAlgorithm</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

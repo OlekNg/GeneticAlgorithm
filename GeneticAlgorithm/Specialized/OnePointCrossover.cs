@@ -6,7 +6,7 @@ using Genetics.Generic;
 
 namespace Genetics.Specialized
 {
-    public class OnePointCrossover : ICrossoverOperator<BinaryChromosome>
+    public class OnePointCrossover : ICrossoverOperator<List<bool>>
     {
         /// <summary>
         /// To draw a slice point.
@@ -18,14 +18,7 @@ namespace Genetics.Specialized
             _randomizer = new Random();
         }
 
-        /// <summary>
-        /// Crosses genotypes from given chromosomes and creates
-        /// recombined genotypes.
-        /// </summary>
-        /// <param name="c1"></param>
-        /// <param name="c2"></param>
-        /// <returns>2 genotypes (2 element array of genotype).</returns>
-        private List<bool>[] CreateNewGenotypes(List<bool> g1, List<bool> g2)
+        Tuple<List<bool>, List<bool>> ICrossoverOperator<List<bool>>.Crossover(List<bool> g1, List<bool> g2)
         {
             int length = g1.Count;
             int point = _randomizer.Next(1, length);
@@ -42,19 +35,7 @@ namespace Genetics.Specialized
             newGenotypes[1].AddRange(g2.GetRange(0, point));
             newGenotypes[1].AddRange(g1.GetRange(point, length - point));
 
-            return newGenotypes;
-        }
-
-        public Tuple<IChromosome, IChromosome> Crossover(BinaryChromosome c1, BinaryChromosome c2)
-        {
-            List<bool>[] newGenotypes = CreateNewGenotypes(c1.Genotype, c2.Genotype);
-
-            // Create new chromosomes.
-            Tuple<IChromosome, IChromosome> result;
-            result = new Tuple<IChromosome, IChromosome>(
-                new BinaryChromosome(c1.Genotype),
-                new BinaryChromosome(c2.Genotype));
-            return result;
+            return new Tuple<List<bool>, List<bool>>(newGenotypes[0], newGenotypes[1]);
         }
     }
 }

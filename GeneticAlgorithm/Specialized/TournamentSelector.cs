@@ -13,9 +13,9 @@ namespace Genetics.Specialized
     {
         private Random _randomizer = new Random();
 
-        public List<IChromosome> Select(List<IChromosome> population)
+        public Population Select(Population population)
         {
-            List<IChromosome> result = new List<IChromosome>(population.Count);
+            Population result = new Population(population.Count);
 
             // Tournament group
             List<IChromosome> group = new List<IChromosome>(2);

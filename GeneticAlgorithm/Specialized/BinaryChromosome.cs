@@ -8,6 +8,11 @@ namespace Genetics.Specialized
 {
     public class BinaryChromosome : Chromosome<List<bool>>
     {
+        static BinaryChromosome()
+        {
+            CreateFunc = x => new BinaryChromosome(x);
+        }
+
         public BinaryChromosome()
         {
             Genotype = new List<bool>();
@@ -17,6 +22,5 @@ namespace Genetics.Specialized
         {
             Genotype = genotype;
         }
-
     }
 }

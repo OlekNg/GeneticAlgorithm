@@ -6,8 +6,7 @@ using System.Text;
 namespace Genetics.Generic
 {
     public interface IRepairer<T>
-        where T : IChromosome
     {
-        void Repair(T chromosome);
+        void Repair(T genotype);
     }
 }

@@ -6,8 +6,7 @@ using System.Text;
 namespace Genetics.Generic
 {
     public interface IEvaluator<T>
-        where T: IChromosome
     {
-        double Eval(T chromosome);
+        double Eval(T genotype);
     }
 }

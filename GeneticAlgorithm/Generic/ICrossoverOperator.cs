@@ -6,8 +6,7 @@ using System.Text;
 namespace Genetics.Generic
 {
     public interface ICrossoverOperator<T>
-        where T : IChromosome
     {
-        Tuple<IChromosome, IChromosome> Crossover(T chromosome1, T chromosome2);
+        Tuple<T, T> Crossover(T genotype1, T genotype2);
     }
 }

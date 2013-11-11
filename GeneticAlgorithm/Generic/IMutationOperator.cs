@@ -6,8 +6,7 @@ using System.Text;
 namespace Genetics.Generic
 {
     public interface IMutationOperator<T>
-        where T : IChromosome
     {
-        void Mutate(T chromosome);
+        void Mutate(T genotype);
     }
 }
