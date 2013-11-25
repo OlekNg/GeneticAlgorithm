@@ -1,28 +1,70 @@
 ﻿using Genetics.Generic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace Genetics
 {
+    /// <summary>
+    /// Main genetic algorithm class.
+    /// </summary>
     public class GeneticAlgorithm
     {
-        private const double DEFAULT_CROSSOVER_PROBABILITY = 0.75;
-        private const int DEFAULT_MAX_ITERATIONS = 100;
-        private const int DEFAULT_POP_SIZE = 50;
+        #region Fields
+        protected const double DEFAULT_CROSSOVER_PROBABILITY = 0.75;
+        protected const int DEFAULT_MAX_ITERATIONS = 100;
+        protected const int DEFAULT_POP_SIZE = 50;
 
-        private int _currentIteration;
+        // Measuring time of each genetic algorithm phase.
+        Stopwatch _swCrossover = new Stopwatch();
+        Stopwatch _swMutation = new Stopwatch();
+        Stopwatch _swEvaluation = new Stopwatch();
+        Stopwatch _swRepair = new Stopwatch();
+
+        /// <summary>
+        /// Iteration counter.
+        /// </summary>
+        protected int _currentIteration;
         
-        private IChromosomeFactory _factory;
-        
-        private Population _currentPopulation;
-        private Population _parentPopulation;
-        private int _initialPopulationSize;
+        /// <summary>
+        /// Chromosome factory which is used to create initial population.
+        /// </summary>
+        protected IChromosomeFactory _factory;
 
-        private Random _randomizer;
+        /// <summary>
+        /// Current chromosome population.
+        /// </summary>
+        protected Population _currentPopulation;
 
-        public GeneticAlgorithm(IChromosomeFactory factory, int initialPopulationSize = DEFAULT_POP_SIZE)
+        /// <summary>
+        /// Parent chromosome population.
+        /// </summary>
+        protected Population _parentPopulation;
+
+        /// <summary>
+        /// Number of chromosomes in initial population.
+        /// </summary>
+        protected int _initialPopulationSize;
+
+        protected Random _randomizer;
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Initializes genetic algorithm with default initial population size.
+        /// </summary>
+        /// <param name="factory">Chromosome factory to perform population initialization.</param>
+        public GeneticAlgorithm(IChromosomeFactory factory)
+            : this(factory, DEFAULT_POP_SIZE) { }
+
+        /// <summary>
+        /// Initializes genetic algorithm with desired initial population size.
+        /// </summary>
+        /// <param name="factory">Chromosome factory to perform population initialization.</param>
+        /// <param name="initialPopulationSize">Initial population size.</param>
+        public GeneticAlgorithm(IChromosomeFactory factory, int initialPopulationSize)
         {
             MaxIterations = DEFAULT_MAX_ITERATIONS;
             CrossoverProbability = DEFAULT_CROSSOVER_PROBABILITY;
@@ -31,17 +73,43 @@ namespace Genetics
             _factory = factory;
             _randomizer = new Random();
 
-            if (CheckStopCondition == null)
-                CheckStopCondition = (p1, p2) => false;
+            // No default stop condition - always return false.
+            CheckStopCondition = (p1, p2) => false;
         }
+        #endregion
 
+        public delegate void ReportStatusDelegate(GeneticAlgorithmStatus status);
+
+        /// <summary>
+        /// Reports status of running genetic algorithm.
+        /// </summary>
+        public event ReportStatusDelegate ReportStatus;
+
+        #region Properties
+        /// <summary>
+        /// Best chromosome in current population.
+        /// </summary>
         public IChromosome BestChromosome { get { return _currentPopulation.BestChromosome; } }
 
+        /// <summary>
+        /// Function for checking for stop condition.
+        /// </summary>
         public Func<Population, Population, bool> CheckStopCondition { get; set; }
 
+        /// <summary>
+        /// Probability of taking chromosome to crossover operation.
+        /// </summary>
         public double CrossoverProbability { get; set; }
 
+        /// <summary>
+        /// Returns current iteration number.
+        /// </summary>
         public int CurrentIteration { get { return _currentIteration; } }
+
+        /// <summary>
+        /// Access to current population.
+        /// </summary>
+        public Population CurrentPopulation { get { return _currentPopulation; } }
 
         /// <summary>
         /// Max iterations for genetic algorithm. Default 1000.
@@ -49,11 +117,142 @@ namespace Genetics
         public int MaxIterations { get; set; }
 
         /// <summary>
-        /// Selector which creates new parent population.
+        /// Selector which creates new current population based on parent population.
         /// </summary>
         public ISelector Selector { get; set; }
+        #endregion
 
-        public void InitPopulation()
+        /// <summary>
+        /// Performs whole genetic algorithm cycle except checking for stop conditions.
+        /// Allows to manually run genetic algorithm.
+        /// </summary>
+        public void NextGeneration()
+        {
+            _currentIteration++;
+            _parentPopulation = _currentPopulation;
+
+            // Perform whole genetic algorithm cycle.
+            SelectionPhase();
+            CrossoverPhase();
+            MutationPhase();
+            ReparationPhase();
+            EvaluationPhase();
+
+            ReportStatus(GenerateReportStatus());
+        }
+
+        #region Genetic algorithm phases.
+        /// <summary>
+        /// Performs population crossover.
+        /// </summary>
+        protected void CrossoverPhase()
+        {
+            _swCrossover.Start();
+
+            // List of chromosomes to crossover.
+            List<IChromosome> toCrossover = new List<IChromosome>();
+
+            // Draw chromosomes to crossover.
+            for (int i = 0; i < _currentPopulation.Count; i++)
+            {
+                if (_randomizer.NextDouble() < CrossoverProbability)
+                    // Insert at random position.
+                    toCrossover.Insert(_randomizer.Next(0, toCrossover.Count), _currentPopulation[i]);
+            }
+
+            // Check if we can pair chromosomes and optionally remove one.
+            if (toCrossover.Count % 2 != 0)
+                toCrossover.RemoveAt(_randomizer.Next(0, toCrossover.Count));
+
+            // Chromosomes are in random order, so we can pair them sequentially.
+            for (int i = 0; i < toCrossover.Count; i += 2)
+                toCrossover[i].Crossover(toCrossover[i + 1]);
+
+            _swCrossover.Stop();
+        }
+
+        /// <summary>
+        /// Evaluates population.
+        /// </summary>
+        protected void EvaluationPhase()
+        {
+            _swEvaluation.Start();
+            _currentPopulation.Eval();
+            _swEvaluation.Stop();
+        }
+
+        /// <summary>
+        /// Performs population mutation.
+        /// </summary>
+        protected void MutationPhase()
+        {
+            _swMutation.Start();
+            _currentPopulation.Chromosomes.ForEach(x => x.Mutate());
+            _swMutation.Stop();
+        }
+
+        /// <summary>
+        /// Repaires population.
+        /// </summary>
+        protected void ReparationPhase()
+        {
+            _swRepair.Start();
+            _currentPopulation.Repair();
+            _swRepair.Stop();
+        }
+
+        /// <summary>
+        /// Creates new current population based on parent population using Selector.
+        /// </summary>
+        protected void SelectionPhase()
+        {
+            _currentPopulation = Selector.Select(_parentPopulation);
+        }
+        #endregion
+
+        /// <summary>
+        /// Starts algorithm.
+        /// </summary>
+        public void Start()
+        {
+            InitPopulation();
+            ResetTimers();
+
+            do 
+            {
+                NextGeneration();
+            } while (!CheckStopCondition(_currentPopulation, _parentPopulation) && _currentIteration < MaxIterations);
+        }
+
+        /// <summary>
+        /// Generates current status of algorithm
+        /// </summary>
+        protected GeneticAlgorithmStatus GenerateReportStatus()
+        {
+            // Sum all execution times.
+            double sum = _swCrossover.Elapsed.TotalMilliseconds;
+            sum += _swEvaluation.Elapsed.TotalMilliseconds;
+            sum += _swMutation.Elapsed.TotalMilliseconds;
+            sum += _swRepair.Elapsed.TotalMilliseconds;
+
+            GeneticAlgorithmStatus status = new GeneticAlgorithmStatus();
+            status.CrossoverOverhead = _swCrossover.Elapsed.TotalMilliseconds / sum;
+            status.EvaluationOverhead = _swEvaluation.Elapsed.TotalMilliseconds / sum;
+            status.MutationOverhead = _swMutation.Elapsed.TotalMilliseconds / sum;
+            status.RepairOverhead = _swRepair.Elapsed.TotalMilliseconds / sum;
+
+            status.IterationNumber = _currentIteration;
+            status.MaxIterations = MaxIterations;
+
+            status.CurrentPopulation = _currentPopulation;
+
+            return status;
+        }
+
+        /// <summary>
+        /// Initializes genetic algorithm population.
+        /// </summary>
+        protected void InitPopulation()
         {
             _currentPopulation = new Population();
             for (int i = 0; i < _initialPopulationSize; i++)
@@ -63,51 +262,15 @@ namespace Genetics
             _currentPopulation.Eval();
         }
 
-        public void NextGeneration()
+        /// <summary>
+        /// Resets all timers responsible for measuring each phase execution time.
+        /// </summary>
+        protected void ResetTimers()
         {
-            _currentIteration++;
-
-            _parentPopulation = _currentPopulation;
-
-            // Selection.
-            _currentPopulation = Selector.Select(_parentPopulation);
-
-            // Crossover.
-            List<IChromosome> toCrossover = new List<IChromosome>();
-
-            for (int i = 0; i < _currentPopulation.Count; i++)
-            {
-                if (_randomizer.NextDouble() < CrossoverProbability)
-                    // Insert at random position.
-                    toCrossover.Insert(_randomizer.Next(0, toCrossover.Count), _currentPopulation[i]);
-            }
-
-            // Check if we can pair chromosomes
-            // and optionally remove one.
-            if (toCrossover.Count % 2 != 0)
-                toCrossover.RemoveAt(_randomizer.Next(0, toCrossover.Count));
-
-            // Chromosomes are in random order, so we can
-            // pair them sequentially.
-            for (int i = 0; i < toCrossover.Count; i += 2)
-                toCrossover[i].Crossover(toCrossover[i + 1]);
-
-            // Mutation.
-            _currentPopulation.Chromosomes.ForEach(x => x.Mutate());
-
-            // Reparation and evaluation.
-            _currentPopulation.Repair();
-            _currentPopulation.Eval();
-        }
-
-        public void Start()
-        {
-            InitPopulation();
-
-            do 
-            {
-                NextGeneration();
-            } while (!CheckStopCondition(_currentPopulation, _parentPopulation) && _currentIteration < MaxIterations);
+            _swCrossover.Reset();
+            _swEvaluation.Reset();
+            _swMutation.Reset();
+            _swRepair.Reset();
         }
     }
 }

@@ -6,10 +6,11 @@ using System.Text;
 
 namespace Genetics
 {
+    /// <summary>
+    /// Represents population of chromosomes.
+    /// </summary>
     public class Population
     {
-        private const int DEFAUTL_POPULATION_SIZE = 50;
-
         private double _avgFitness;
         private double _fitness;
         private IChromosome _bestChromosome;
@@ -29,6 +30,9 @@ namespace Genetics
             Chromosomes = new List<IChromosome>(size);
         }
 
+        /// <summary>
+        /// Population avarage fitness.
+        /// </summary>
         public double AvgFitness
         {
             get
@@ -39,8 +43,14 @@ namespace Genetics
             }
         }
 
+        /// <summary>
+        /// Best chromosome in current population.
+        /// </summary>
         public IChromosome BestChromosome { get { return _bestChromosome; } }
 
+        /// <summary>
+        /// Population general fitness.
+        /// </summary>
         public double Fitness
         {
             get
@@ -51,31 +61,39 @@ namespace Genetics
             }
         }
 
+        /// <summary>
+        /// Population count.
+        /// </summary>
         public int Count { get { return Chromosomes.Count; } }
 
+        /// <summary>
+        /// Chromosomes in population.
+        /// </summary>
         public List<IChromosome> Chromosomes { get; set; }
 
+        /// <summary>
+        /// Access to chromosome list in population through indexing operator.
+        /// </summary>
+        /// <param name="i">Index of chromosome.</param>
+        /// <returns>Chromosome from population.</returns>
         public IChromosome this[int i]
         {
             get { return Chromosomes[i]; }
             set { Chromosomes[i] = value; }
         }
 
-        private double CalculateAvgFitness()
-        {
-            return Fitness / Count;
-        }
-
-        private double CalculateFitness()
-        {
-            return Chromosomes.Sum(x => x.Value);
-        }
-
+        /// <summary>
+        /// Adds new chromosome to population.
+        /// </summary>
+        /// <param name="c"></param>
         public void Add(IChromosome c)
         {
             Chromosomes.Add(c);
         }
 
+        /// <summary>
+        /// Evaluates each chromosome in population and updates best one (can be accessed through BestChromosome property).
+        /// </summary>
         public void Eval()
         {
             Chromosomes.ForEach(x => x.Eval());
@@ -91,9 +109,28 @@ namespace Genetics
                 _bestChromosome = candidate;
         }
 
+        /// <summary>
+        /// Repaires each chromosome in population.
+        /// </summary>
         public void Repair()
         {
             Chromosomes.ForEach(x => x.Repair());
+        }
+
+        /// <summary>
+        /// Calculates population avarage fitness.
+        /// </summary>
+        protected double CalculateAvgFitness()
+        {
+            return Fitness / Count;
+        }
+
+        /// <summary>
+        /// Calculates general population fitness.
+        /// </summary>
+        protected double CalculateFitness()
+        {
+            return Chromosomes.Sum(x => x.Value);
         }
     }
 }

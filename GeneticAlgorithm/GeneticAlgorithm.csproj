@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generic\IChromosome.cs" />
+    <Compile Include="GeneticAlgorithmStatus.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Specialized\BinaryChromosome.cs" />
     <Compile Include="Generic\IChromosomeFactory.cs" />
