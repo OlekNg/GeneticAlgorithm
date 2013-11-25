@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Genetics.Specialized
 {
+    /// <summary>
+    /// Binary implementation of chromosome.
+    /// </summary>
     public class BinaryChromosome : Chromosome<List<bool>>
     {
         static BinaryChromosome()
@@ -20,7 +23,7 @@ namespace Genetics.Specialized
 
         public BinaryChromosome(List<bool> genotype)
         {
-            Genotype = genotype;
+            Genotype = new List<bool>(genotype);
         }
     }
 }

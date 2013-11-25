@@ -7,6 +7,9 @@ namespace Genetics.Generic
 {
     public interface IRepairer<T>
     {
+        /// <summary>
+        /// Should replace genotype with repaired one.
+        /// </summary>
         void Repair(T genotype);
     }
 }

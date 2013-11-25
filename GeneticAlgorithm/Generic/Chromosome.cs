@@ -6,7 +6,7 @@ using System.Text;
 namespace Genetics.Generic
 {
     /// <summary>
-    /// 
+    /// Base class for chromosomes.
     /// </summary>
     /// <typeparam name="T">Type of genotype.</typeparam>
     public class Chromosome<T> : IChromosome
@@ -17,6 +17,9 @@ namespace Genetics.Generic
             Genotype = genotype;
         }
 
+        /// <summary>
+        /// Function that performs deep copy of chromosome.
+        /// </summary>
         public static Func<T, IChromosome> CreateFunc { get; set; }
         public static ICrossoverOperator<T> CrossoverOperator { get; set; }
         public static IEvaluator<T> Evaluator { get; set; }
