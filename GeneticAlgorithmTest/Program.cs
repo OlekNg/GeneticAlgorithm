@@ -29,6 +29,7 @@ namespace GeneticAlgorithmTest
         {
             Console.CursorTop = 0;
             Console.CursorLeft = 0;
+            Console.WriteLine("Iteration: {0}", status.IterationNumber);
             Console.WriteLine("Crossover overhead: {0:0.000}", status.CrossoverOverhead);
             Console.WriteLine("Evaluation overhead: {0:0.000}", status.EvaluationOverhead);
             Console.WriteLine("Mutation overhead: {0:0.000}", status.MutationOverhead);

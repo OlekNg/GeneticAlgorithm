@@ -225,6 +225,7 @@ namespace Genetics
         {
             InitPopulation();
             ResetTimers();
+            BestChromosome = null;
 
             do
             {
