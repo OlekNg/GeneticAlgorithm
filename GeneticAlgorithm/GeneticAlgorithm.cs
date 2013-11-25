@@ -27,7 +27,7 @@ namespace Genetics
         /// Iteration counter.
         /// </summary>
         protected int _currentIteration;
-        
+
         /// <summary>
         /// Chromosome factory which is used to create initial population.
         /// </summary>
@@ -87,9 +87,9 @@ namespace Genetics
 
         #region Properties
         /// <summary>
-        /// Best chromosome in current population.
+        /// Best chromosome during whole algorithm.
         /// </summary>
-        public IChromosome BestChromosome { get { return _currentPopulation.BestChromosome; } }
+        public IChromosome BestChromosome { get; set; }
 
         /// <summary>
         /// Function for checking for stop condition.
@@ -138,7 +138,8 @@ namespace Genetics
             ReparationPhase();
             EvaluationPhase();
 
-            ReportStatus(GenerateReportStatus());
+            if (ReportStatus != null)
+                ReportStatus(GenerateReportStatus());
         }
 
         #region Genetic algorithm phases.
@@ -179,6 +180,13 @@ namespace Genetics
             _swEvaluation.Start();
             _currentPopulation.Eval();
             _swEvaluation.Stop();
+
+            // Update best chromosome during whole algorithm.
+            if (BestChromosome == null)
+                BestChromosome = _currentPopulation.BestChromosome;
+            else
+                if (_currentPopulation.BestChromosome.CompareTo(BestChromosome) > 0)
+                    BestChromosome = _currentPopulation.BestChromosome;
         }
 
         /// <summary>
@@ -218,7 +226,7 @@ namespace Genetics
             InitPopulation();
             ResetTimers();
 
-            do 
+            do
             {
                 NextGeneration();
             } while (!CheckStopCondition(_currentPopulation, _parentPopulation) && _currentIteration < MaxIterations);
@@ -245,6 +253,7 @@ namespace Genetics
             status.MaxIterations = MaxIterations;
 
             status.CurrentPopulation = _currentPopulation;
+            status.BestChromosome = BestChromosome;
 
             return status;
         }

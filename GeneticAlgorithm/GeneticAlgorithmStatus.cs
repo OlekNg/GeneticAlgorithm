@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Genetics.Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +27,10 @@ namespace Genetics
         /// Current genetic algorithm population.
         /// </summary>
         public Population CurrentPopulation;
+
+        /// <summary>
+        /// Best chromosme during whole algorithm.
+        /// </summary>
+        public IChromosome BestChromosome;
     }
 }
