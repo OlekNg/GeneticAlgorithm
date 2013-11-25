@@ -56,13 +56,13 @@ namespace Genetics.Generic
         public void Mutate()
         {
             if (MutationOperator != null)
-                MutationOperator.Mutate(Genotype);
+                Genotype = MutationOperator.Mutate(Genotype);
         }
 
         public void Repair()
         {
             if (Repairer != null)
-                Repairer.Repair(Genotype);
+                Genotype = Repairer.Repair(Genotype);
         }
 
         public int CompareTo(IChromosome other)

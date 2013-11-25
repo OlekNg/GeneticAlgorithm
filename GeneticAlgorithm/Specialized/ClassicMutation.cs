@@ -22,13 +22,17 @@ namespace Genetics.Specialized
             _probability = probability;
         }
 
-        public void Mutate(List<bool> genotype)
+        public List<bool> Mutate(List<bool> genotype)
         {
-            for (int i = 0; i < genotype.Count; i++)
+            List<bool> result = new List<bool>(genotype);
+
+            for (int i = 0; i < result.Count; i++)
             {
                 if (_randomizer.NextDouble() <= _probability)
-                    genotype[i] = !genotype[i];
+                    result[i] = !result[i];
             }
+
+            return result;
         }
     }
 }
