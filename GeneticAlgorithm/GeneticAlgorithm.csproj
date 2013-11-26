@@ -45,6 +45,7 @@
     <Compile Include="Specialized\BinaryChromosome.cs" />
     <Compile Include="Generic\IChromosomeFactory.cs" />
     <Compile Include="Specialized\BinaryChromosomeFactory.cs" />
+    <Compile Include="Specialized\MultiPointCrossover.cs" />
     <Compile Include="Specialized\OnePointCrossover.cs" />
     <Compile Include="Generic\Chromosome.cs" />
     <Compile Include="Generic\ICrossoverOperator.cs" />

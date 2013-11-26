@@ -39,6 +39,16 @@ namespace GeneticAlgorithmTest
             Console.WriteLine("Best population chromosome value: {0:0.000}", status.CurrentPopulation.BestChromosome.Value);
             Console.WriteLine("Best algorithm chromosome value: {0:0.000}", status.BestChromosome.Value);
         }
+
+        static string GenotypeToString(List<bool> genotype)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (bool b in genotype)
+                sb.Append(b == true ? "1" : "0");
+
+            return sb.ToString();
+        }
     }
 
     public class MyEvaluator : IEvaluator<List<bool>>
