@@ -31,7 +31,9 @@ namespace Genetics.Generic
 
         public IChromosome Clone()
         {
-            return CreateFunc(Genotype);
+            IChromosome cloned = CreateFunc(Genotype);
+            cloned.Value = Value;
+            return cloned;
         }
 
         public void Crossover(IChromosome chromosome)
@@ -39,7 +41,7 @@ namespace Genetics.Generic
             if (CrossoverOperator != null)
             {
                 Chromosome<T> c = (Chromosome<T>)chromosome;
-                var result = CrossoverOperator.Crossover(Genotype, c.Genotype);
+                var result = CrossoverOperator.Crossover(this, c);
                 Genotype = result.Item1;
                 c.Genotype = result.Item2;
             }

@@ -26,8 +26,11 @@ namespace Genetics.Specialized
             _points = points;
         }
 
-        Tuple<List<bool>, List<bool>> ICrossoverOperator<List<bool>>.Crossover(List<bool> g1, List<bool> g2)
+        public Tuple<List<bool>, List<bool>> Crossover(Chromosome<List<bool>> c1, Chromosome<List<bool>> c2)
         {
+            var g1 = c1.Genotype;
+            var g2 = c2.Genotype;
+
             int length = g1.Count;
 
             List<bool>[] newGenotypes = new List<bool>[2];

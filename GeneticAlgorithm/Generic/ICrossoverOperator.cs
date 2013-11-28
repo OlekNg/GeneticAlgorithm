@@ -7,6 +7,6 @@ namespace Genetics.Generic
 {
     public interface ICrossoverOperator<T>
     {
-        Tuple<T, T> Crossover(T genotype1, T genotype2);
+        Tuple<T, T> Crossover(Chromosome<T> c1, Chromosome<T> c2);
     }
 }

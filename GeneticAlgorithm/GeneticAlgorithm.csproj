@@ -57,6 +57,7 @@
     <Compile Include="Specialized\ClassicMutation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Generic\ISelector.cs" />
+    <Compile Include="Specialized\RankSelector.cs" />
     <Compile Include="Specialized\RouletteSelector.cs" />
     <Compile Include="Specialized\TournamentSelector.cs" />
   </ItemGroup>
