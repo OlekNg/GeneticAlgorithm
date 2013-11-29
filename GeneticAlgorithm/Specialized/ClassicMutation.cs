@@ -8,7 +8,7 @@ namespace Genetics.Specialized
 {
     public class ClassicMutation : IMutationOperator<List<bool>>
     {
-        private const double DEFAULT_PROBABILITY = 0.1;
+        private const double DEFAULT_PROBABILITY = 0.01;
 
         /// <summary>
         /// To randomize mutation.
