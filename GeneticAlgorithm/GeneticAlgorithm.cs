@@ -62,6 +62,9 @@ namespace Genetics
             MaxIterations = DEFAULT_MAX_ITERATIONS;
             CrossoverProbability = DEFAULT_CROSSOVER_PROBABILITY;
             _factory = factory;
+
+            // No default stop condition - always return false.
+            CheckStopCondition = (p1, p2) => false;
         }
 
         /// <summary>
@@ -73,9 +76,6 @@ namespace Genetics
             : this(factory)
         {
             _initialPopulationSize = initialPopulationSize;
-
-            // No default stop condition - always return false.
-            CheckStopCondition = (p1, p2) => false;
         }
         #endregion
 
