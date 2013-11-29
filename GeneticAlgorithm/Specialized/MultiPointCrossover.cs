@@ -13,16 +13,14 @@ namespace Genetics.Specialized
         /// <summary>
         /// To draw a slice points.
         /// </summary>
-        private Random _randomizer;
+        private Random _randomizer = new Random();
 
-        private int _points;
+        private int _points = DEFAULT_POINTS;
 
-        public MultiPointCrossover()
-            : this(DEFAULT_POINTS) { }
+        public MultiPointCrossover() { }
 
         public MultiPointCrossover(int points)
         {
-            _randomizer = new Random();
             _points = points;
         }
 

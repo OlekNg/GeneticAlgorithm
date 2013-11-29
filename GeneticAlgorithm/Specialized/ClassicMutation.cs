@@ -13,18 +13,19 @@ namespace Genetics.Specialized
         /// <summary>
         /// To randomize mutation.
         /// </summary>
-        private Random _randomizer;
-        private double _probability;
+        private Random _randomizer = new Random();
+        private double _probability = DEFAULT_PROBABILITY;
 
-        public ClassicMutation(double probability = DEFAULT_PROBABILITY)
+        public ClassicMutation() { }
+
+        public ClassicMutation(double probability)
         {
-            _randomizer = new Random();
             _probability = probability;
         }
 
-        public List<bool> Mutate(List<bool> genotype)
+        public List<bool> Mutate(Chromosome<List<bool>> c)
         {
-            List<bool> result = new List<bool>(genotype);
+            List<bool> result = new List<bool>(c.Genotype);
 
             for (int i = 0; i < result.Count; i++)
             {

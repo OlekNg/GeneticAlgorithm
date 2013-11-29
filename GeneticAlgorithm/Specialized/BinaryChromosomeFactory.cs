@@ -8,13 +8,12 @@ namespace Genetics.Specialized
 {
     public class BinaryChromosomeFactory : IChromosomeFactory
     {
-        private int _chromosomeLength;
+        protected int _chromosomeLength;
 
-        private Random _randomizer;
+        protected Random _randomizer = new Random();
 
         public BinaryChromosomeFactory(int chromosomeLength)
         {
-            _randomizer = new Random();
             _chromosomeLength = chromosomeLength;
         }
 

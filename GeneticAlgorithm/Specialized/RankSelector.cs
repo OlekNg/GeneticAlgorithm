@@ -1,6 +1,7 @@
 ﻿using Genetics.Generic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -8,11 +9,49 @@ namespace Genetics.Specialized
 {
     public class RankSelector : ISelector
     {
-        private Random _randomizer = new Random();
+        protected const SelectionMode DEFAULT_MODE = SelectionMode.Percentage;
+        protected const int DEFAULT_NUMBER = 10;
+        protected const double DEFAULT_PERCENTAGE = 0.5;
+
+        protected Random _randomizer = new Random();
+
+        public RankSelector()
+        {
+            Mode = DEFAULT_MODE;
+            Number = DEFAULT_NUMBER;
+            Percentage = DEFAULT_PERCENTAGE;
+        }
+
+        public RankSelector(SelectionMode mode)
+            : this()
+        {
+            Mode = mode;
+        }
+
+        /// <summary>
+        /// Number - number best chromosomes will be taken to new population.
+        /// Percentage - certain percentage of best chromosomes will be taken to new population.
+        /// </summary>
+        public enum SelectionMode { Number, Percentage }
+
+        /// <summary>
+        /// Selection mode.
+        /// </summary>
+        public SelectionMode Mode { get; set; }
+
+        /// <summary>
+        /// Number of best chromosomes from parent population in Number selection mode.
+        /// </summary>
+        public int Number { get; set; }
+        
+        /// <summary>
+        /// Percentage of best chromosomes from parent population in Percentage selection mode.
+        /// </summary>
+        public double Percentage { get; set; }
 
         public Population Select(Population population)
         {
-            int bestCount = (int)(0.25 * population.Count);
+            int bestCount = Mode == SelectionMode.Percentage ? (int)(Percentage * population.Count) : Number;
 
             // Create ranking
             List<IChromosome> ranking = population.Chromosomes.OrderByDescending(x => x.Value).ToList();

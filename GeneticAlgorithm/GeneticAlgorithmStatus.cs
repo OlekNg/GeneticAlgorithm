@@ -22,6 +22,7 @@ namespace Genetics
         public double MutationOverhead;
         public double EvaluationOverhead;
         public double RepairOverhead;
+        public double TransformOverhead;
 
         /// <summary>
         /// Current genetic algorithm population.

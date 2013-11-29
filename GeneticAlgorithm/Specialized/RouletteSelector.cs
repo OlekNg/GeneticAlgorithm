@@ -8,12 +8,7 @@ namespace Genetics.Specialized
 {
     public class RouletteSelector : ISelector
     {
-        private Random _randomizer;
-
-        public RouletteSelector()
-        {
-            _randomizer = new Random();
-        }
+        private Random _randomizer = new Random();
 
         public Population Select(Population population)
         {

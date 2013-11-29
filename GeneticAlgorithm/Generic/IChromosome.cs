@@ -35,5 +35,10 @@ namespace Genetics.Generic
         /// Should replace genotype with repaired one.
         /// </summary>
         void Repair();
+
+        /// <summary>
+        /// Should replace genotype. Can be used as local optimization phase.
+        /// </summary>
+        void Transform();
     }
 }

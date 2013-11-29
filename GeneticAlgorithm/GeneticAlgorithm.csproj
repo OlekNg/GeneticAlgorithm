@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generic\ITransformer.cs" />
     <Compile Include="Generic\IChromosome.cs" />
     <Compile Include="GeneticAlgorithmStatus.cs" />
     <Compile Include="Population.cs" />

@@ -7,6 +7,6 @@ namespace Genetics.Generic
 {
     public interface IRepairer<T>
     {
-        T Repair(T genotype);
+        T Repair(Chromosome<T> c);
     }
 }

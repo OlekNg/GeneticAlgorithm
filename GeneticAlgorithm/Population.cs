@@ -11,9 +11,9 @@ namespace Genetics
     /// </summary>
     public class Population
     {
-        private double _avgFitness;
-        private double _fitness;
-        private IChromosome _bestChromosome;
+        protected double _avgFitness;
+        protected double _fitness;
+        protected IChromosome _bestChromosome;
 
         public Population()
         {
@@ -115,6 +115,15 @@ namespace Genetics
         public void Repair()
         {
             Chromosomes.ForEach(x => x.Repair());
+        }
+
+        /// <summary>
+        /// Performs user defined transformations of chromosome -
+        /// for example local search.
+        /// </summary>
+        public void Transform()
+        {
+            Chromosomes.ForEach(x => x.Transform());
         }
 
         /// <summary>

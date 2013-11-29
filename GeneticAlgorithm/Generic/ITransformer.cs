@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Genetics.Generic
 {
-    public interface IMutationOperator<T>
+    public interface ITransformer<T>
     {
-        T Mutate(Chromosome<T> c);
+        T Transform(Chromosome<T> c);
     }
 }

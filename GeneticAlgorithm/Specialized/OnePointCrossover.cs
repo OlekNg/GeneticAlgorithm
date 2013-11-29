@@ -11,12 +11,7 @@ namespace Genetics.Specialized
         /// <summary>
         /// To draw a slice point.
         /// </summary>
-        private Random _randomizer;
-
-        public OnePointCrossover()
-        {
-            _randomizer = new Random();
-        }
+        private Random _randomizer = new Random();
 
         public Tuple<List<bool>, List<bool>> Crossover(Chromosome<List<bool>> c1, Chromosome<List<bool>> c2)
         {

@@ -22,6 +22,7 @@ namespace Genetics
         Stopwatch _swMutation = new Stopwatch();
         Stopwatch _swEvaluation = new Stopwatch();
         Stopwatch _swRepair = new Stopwatch();
+        Stopwatch _swTransform = new Stopwatch();
 
         /// <summary>
         /// Iteration counter.
@@ -46,9 +47,9 @@ namespace Genetics
         /// <summary>
         /// Number of chromosomes in initial population.
         /// </summary>
-        protected int _initialPopulationSize;
+        protected int _initialPopulationSize = DEFAULT_POP_SIZE;
 
-        protected Random _randomizer;
+        protected Random _randomizer = new Random();
         #endregion
 
         #region Constructors
@@ -57,7 +58,11 @@ namespace Genetics
         /// </summary>
         /// <param name="factory">Chromosome factory to perform population initialization.</param>
         public GeneticAlgorithm(IChromosomeFactory factory)
-            : this(factory, DEFAULT_POP_SIZE) { }
+        {
+            MaxIterations = DEFAULT_MAX_ITERATIONS;
+            CrossoverProbability = DEFAULT_CROSSOVER_PROBABILITY;
+            _factory = factory;
+        }
 
         /// <summary>
         /// Initializes genetic algorithm with desired initial population size.
@@ -65,13 +70,9 @@ namespace Genetics
         /// <param name="factory">Chromosome factory to perform population initialization.</param>
         /// <param name="initialPopulationSize">Initial population size.</param>
         public GeneticAlgorithm(IChromosomeFactory factory, int initialPopulationSize)
+            : this(factory)
         {
-            MaxIterations = DEFAULT_MAX_ITERATIONS;
-            CrossoverProbability = DEFAULT_CROSSOVER_PROBABILITY;
-
             _initialPopulationSize = initialPopulationSize;
-            _factory = factory;
-            _randomizer = new Random();
 
             // No default stop condition - always return false.
             CheckStopCondition = (p1, p2) => false;
@@ -136,6 +137,7 @@ namespace Genetics
             CrossoverPhase();
             MutationPhase();
             ReparationPhase();
+            TransformPhase();
             EvaluationPhase();
 
             if (ReportStatus != null)
@@ -216,6 +218,13 @@ namespace Genetics
         {
             _currentPopulation = Selector.Select(_parentPopulation);
         }
+
+        protected void TransformPhase()
+        {
+            _swTransform.Start();
+            _currentPopulation.Transform();
+            _swTransform.Stop();
+        }
         #endregion
 
         /// <summary>
@@ -243,12 +252,14 @@ namespace Genetics
             sum += _swEvaluation.Elapsed.TotalMilliseconds;
             sum += _swMutation.Elapsed.TotalMilliseconds;
             sum += _swRepair.Elapsed.TotalMilliseconds;
+            sum += _swTransform.Elapsed.TotalMilliseconds;
 
             GeneticAlgorithmStatus status = new GeneticAlgorithmStatus();
             status.CrossoverOverhead = _swCrossover.Elapsed.TotalMilliseconds / sum;
             status.EvaluationOverhead = _swEvaluation.Elapsed.TotalMilliseconds / sum;
             status.MutationOverhead = _swMutation.Elapsed.TotalMilliseconds / sum;
             status.RepairOverhead = _swRepair.Elapsed.TotalMilliseconds / sum;
+            status.TransformOverhead = _swTransform.Elapsed.TotalMilliseconds / sum;
 
             status.IterationNumber = _currentIteration;
             status.MaxIterations = MaxIterations;

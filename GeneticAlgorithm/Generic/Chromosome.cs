@@ -25,6 +25,7 @@ namespace Genetics.Generic
         public static IEvaluator<T> Evaluator { get; set; }
         public static IMutationOperator<T> MutationOperator { get; set; }
         public static IRepairer<T> Repairer { get; set; }
+        public static ITransformer<T> Transformer { get; set; }
 
         public T Genotype { get; set; }
         public double Value { get; set; }
@@ -58,13 +59,19 @@ namespace Genetics.Generic
         public void Mutate()
         {
             if (MutationOperator != null)
-                Genotype = MutationOperator.Mutate(Genotype);
+                Genotype = MutationOperator.Mutate(this);
         }
 
         public void Repair()
         {
             if (Repairer != null)
-                Genotype = Repairer.Repair(Genotype);
+                Genotype = Repairer.Repair(this);
+        }
+
+        public void Transform()
+        {
+            if (Transformer != null)
+                Genotype = Transformer.Transform(this);
         }
 
         public int CompareTo(IChromosome other)
@@ -74,5 +81,8 @@ namespace Genetics.Generic
 
             return Value > other.Value ? 1 : -1;
         }
+
+
+        
     }
 }
