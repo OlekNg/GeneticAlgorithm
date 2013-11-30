@@ -23,6 +23,7 @@ namespace Genetics
         Stopwatch _swEvaluation = new Stopwatch();
         Stopwatch _swRepair = new Stopwatch();
         Stopwatch _swTransform = new Stopwatch();
+        Stopwatch _swSelection = new Stopwatch();
 
         /// <summary>
         /// Iteration counter.
@@ -48,6 +49,11 @@ namespace Genetics
         /// Number of chromosomes in initial population.
         /// </summary>
         protected int _initialPopulationSize = DEFAULT_POP_SIZE;
+
+        /// <summary>
+        /// Indicates if we should stop running algorithm.
+        /// </summary>
+        protected bool _stopAlgorithm = false;
 
         protected Random _randomizer = new Random();
         #endregion
@@ -85,6 +91,11 @@ namespace Genetics
         /// Reports status of running genetic algorithm.
         /// </summary>
         public event ReportStatusDelegate ReportStatus;
+
+        /// <summary>
+        /// Reports status after algorithm is completed.
+        /// </summary>
+        public event ReportStatusDelegate Completed;
 
         #region Properties
         /// <summary>
@@ -124,6 +135,14 @@ namespace Genetics
         #endregion
 
         /// <summary>
+        /// Stops algorithm if was running.
+        /// </summary>
+        public void Stop()
+        {
+            _stopAlgorithm = true;
+        }
+
+        /// <summary>
         /// Performs whole genetic algorithm cycle except checking for stop conditions.
         /// Allows to manually run genetic algorithm.
         /// </summary>
@@ -143,6 +162,8 @@ namespace Genetics
             if (ReportStatus != null)
                 ReportStatus(GenerateReportStatus());
         }
+
+        
 
         #region Genetic algorithm phases.
         /// <summary>
@@ -216,7 +237,9 @@ namespace Genetics
         /// </summary>
         protected void SelectionPhase()
         {
+            _swSelection.Start();
             _currentPopulation = Selector.Select(_parentPopulation);
+            _swSelection.Stop();
         }
 
         protected void TransformPhase()
@@ -232,6 +255,7 @@ namespace Genetics
         /// </summary>
         public void Start()
         {
+            _stopAlgorithm = false;
             InitPopulation();
             ResetTimers();
             BestChromosome = null;
@@ -239,7 +263,9 @@ namespace Genetics
             do
             {
                 NextGeneration();
-            } while (!CheckStopCondition(_currentPopulation, _parentPopulation) && _currentIteration < MaxIterations);
+            } while (!CheckStopCondition(_currentPopulation, _parentPopulation) && _currentIteration < MaxIterations && !_stopAlgorithm);
+
+            Completed(GenerateReportStatus());
         }
 
         /// <summary>
@@ -253,6 +279,7 @@ namespace Genetics
             sum += _swMutation.Elapsed.TotalMilliseconds;
             sum += _swRepair.Elapsed.TotalMilliseconds;
             sum += _swTransform.Elapsed.TotalMilliseconds;
+            sum += _swSelection.Elapsed.TotalMilliseconds;
 
             GeneticAlgorithmStatus status = new GeneticAlgorithmStatus();
             status.CrossoverOverhead = _swCrossover.Elapsed.TotalMilliseconds / sum;
@@ -260,6 +287,7 @@ namespace Genetics
             status.MutationOverhead = _swMutation.Elapsed.TotalMilliseconds / sum;
             status.RepairOverhead = _swRepair.Elapsed.TotalMilliseconds / sum;
             status.TransformOverhead = _swTransform.Elapsed.TotalMilliseconds / sum;
+            status.SelectionOverhead = _swSelection.Elapsed.TotalMilliseconds / sum;
 
             status.IterationNumber = _currentIteration;
             status.MaxIterations = MaxIterations;

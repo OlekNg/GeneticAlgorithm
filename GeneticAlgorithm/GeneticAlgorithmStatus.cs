@@ -18,6 +18,7 @@ namespace Genetics
         public int MaxIterations;
 
         // Time consumption by each element.
+        public double SelectionOverhead;
         public double CrossoverOverhead;
         public double MutationOverhead;
         public double EvaluationOverhead;
