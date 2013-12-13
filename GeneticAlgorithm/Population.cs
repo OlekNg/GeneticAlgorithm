@@ -127,6 +127,15 @@ namespace Genetics
         }
 
         /// <summary>
+        /// Updates AvgFitness, Fitness values.
+        /// </summary>
+        public void UpdateStats()
+        {
+            _avgFitness = CalculateAvgFitness();
+            _fitness = CalculateFitness();
+        }
+
+        /// <summary>
         /// Calculates population avarage fitness.
         /// </summary>
         protected double CalculateAvgFitness()

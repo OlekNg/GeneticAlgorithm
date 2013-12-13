@@ -49,7 +49,7 @@ namespace Genetics.Specialized
         /// </summary>
         public double Percentage { get; set; }
 
-        public Population Select(Population population)
+        public virtual Population Select(Population population)
         {
             int bestCount = Mode == SelectionMode.Percentage ? (int)(Percentage * population.Count) : Number;
 

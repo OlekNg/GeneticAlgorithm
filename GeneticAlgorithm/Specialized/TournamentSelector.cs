@@ -13,7 +13,7 @@ namespace Genetics.Specialized
     {
         private Random _randomizer = new Random();
 
-        public Population Select(Population population)
+        public virtual Population Select(Population population)
         {
             Population result = new Population(population.Count);
 

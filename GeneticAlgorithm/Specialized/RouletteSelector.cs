@@ -10,7 +10,7 @@ namespace Genetics.Specialized
     {
         private Random _randomizer = new Random();
 
-        public Population Select(Population population)
+        public virtual Population Select(Population population)
         {
             population.Chromosomes.Sort();
 
