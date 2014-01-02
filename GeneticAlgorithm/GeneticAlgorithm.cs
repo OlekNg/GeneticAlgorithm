@@ -265,7 +265,8 @@ namespace Genetics
                 NextGeneration();
             } while (!CheckStopCondition(_currentPopulation, _parentPopulation) && _currentIteration < MaxIterations && !_stopAlgorithm);
 
-            Completed(GenerateReportStatus());
+            if(Completed != null)
+                Completed(GenerateReportStatus());
         }
 
         /// <summary>
