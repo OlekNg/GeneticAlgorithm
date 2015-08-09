@@ -24,6 +24,7 @@ namespace Genetics
         Stopwatch _swRepair = new Stopwatch();
         Stopwatch _swTransform = new Stopwatch();
         Stopwatch _swSelection = new Stopwatch();
+        double _lastIterationTime = 0;
 
         /// <summary>
         /// Iteration counter.
@@ -292,6 +293,8 @@ namespace Genetics
 
             status.IterationNumber = _currentIteration;
             status.MaxIterations = MaxIterations;
+            status.IterationTimeInMillis = sum - _lastIterationTime;
+            _lastIterationTime = sum;
 
             status.CurrentPopulation = _currentPopulation;
             status.BestChromosome = BestChromosome;

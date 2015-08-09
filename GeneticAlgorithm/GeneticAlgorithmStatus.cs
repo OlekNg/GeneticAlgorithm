@@ -16,6 +16,7 @@ namespace Genetics
         /// </summary>
         public int IterationNumber;
         public int MaxIterations;
+        public double IterationTimeInMillis { get; set; }
 
         // Time consumption by each element.
         public double SelectionOverhead;
