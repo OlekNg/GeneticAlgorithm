@@ -144,6 +144,28 @@ namespace Genetics
         }
 
         /// <summary>
+        /// Enables stop condition when there is no improvement during certain number of iterations.
+        /// </summary>
+        public void EnableBestChromosomeBasedStopCondition(int maxIterationsWithoutImprovemenet = 100)
+        {
+            MaxIterationsWithoutImprovement = maxIterationsWithoutImprovemenet;
+            IterationsWithoutImprovement = 0;
+
+            CheckStopCondition = (currentPop, parentPop) =>
+            {
+                if (BestChromosome != null && BestChromosome.Value > currentPop.BestChromosome.Value)
+                    IterationsWithoutImprovement++;
+                else
+                    IterationsWithoutImprovement = 0;
+
+                return IterationsWithoutImprovement >= MaxIterationsWithoutImprovement;
+            };
+        }
+
+        public int MaxIterationsWithoutImprovement { get; private set; }
+        public int IterationsWithoutImprovement { get; private set; }
+
+        /// <summary>
         /// Performs whole genetic algorithm cycle except checking for stop conditions.
         /// Allows to manually run genetic algorithm.
         /// </summary>
