@@ -51,5 +51,10 @@ namespace Genetics.Specialized
 
             return result;
         }
+
+        public override string ToString()
+        {
+            return "Roulette";
+        }
     }
 }

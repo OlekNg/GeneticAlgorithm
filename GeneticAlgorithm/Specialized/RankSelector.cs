@@ -68,5 +68,9 @@ namespace Genetics.Specialized
             return new Population(newPopulation);
         }
 
+        public override string ToString()
+        {
+            return String.Format("Rank, {0}, {1}", Mode, Mode == SelectionMode.Number ? Number : Percentage);
+        }
     }
 }

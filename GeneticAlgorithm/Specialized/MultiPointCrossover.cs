@@ -58,5 +58,10 @@ namespace Genetics.Specialized
 
             return new Tuple<List<bool>, List<bool>>(newGenotypes[0], newGenotypes[1]);
         }
+
+        public override string ToString()
+        {
+            return String.Format("Multi Point, {0}", _points);
+        }
     }
 }

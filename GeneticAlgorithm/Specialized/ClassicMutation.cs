@@ -35,5 +35,10 @@ namespace Genetics.Specialized
 
             return result;
         }
+
+        public override string ToString()
+        {
+            return String.Format("Classic, {0}", _probability);
+        }
     }
 }
